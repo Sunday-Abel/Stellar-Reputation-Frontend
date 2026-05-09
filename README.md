@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Stellar Reputation — Frontend
 
-## Getting Started
+Next.js frontend for the [Stellar On-Chain Reputation System](https://github.com/Sunday-Abel/Stellar-On-Chain-Reputation-System).
 
-First, run the development server:
+Look up any Stellar wallet address and see its reputation score broken down by transaction history, LP activity, and governance participation.
 
-```bash
+---
+
+## Status
+
+The UI is fully built and runs independently with a **mock data layer** (`lib/mock.ts`). Once the contract is deployed to testnet (Phase 5.1), swap `getScore` in `lib/mock.ts` for a real Soroban RPC call.
+
+---
+
+## Stack
+
+- Next.js 16 (App Router)
+- TypeScript
+- Tailwind CSS
+
+---
+
+## Getting started
+
+```sh
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Structure
 
-## Learn More
+```
+app/
+  page.tsx          # Home page — wallet lookup + formula reference
+  layout.tsx        # Root layout + metadata
+components/
+  WalletLookup.tsx  # Search form + result state machine
+  ScoreCard.tsx     # Score display with signal breakdown bars
+lib/
+  mock.ts           # Mock data layer (swap for real RPC when contract is live)
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Connecting to the live contract
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+When the contract is deployed (Phase 5.1 of the main repo), update `lib/mock.ts`:
 
-## Deploy on Vercel
+1. Replace the `getScore` function body with a call to `ReputationClient.getScore` from the SDK
+2. Pass in the deployed `CONTRACT_ID` and testnet RPC URL
+3. Remove the mock delay and deterministic seed logic
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+
+MIT
